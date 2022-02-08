@@ -3,8 +3,7 @@ RegisterCommand("addAdminToList", function(src, args, raw)
         local target_id = tostring(args[1])
         local target_identifier = GetIdentifierFromId(target_id)
         if target_identifier then
-            local loadContent = LoadResourceFile(GetCurrentResourceName(), "admin_list.json")
-            loadContent = json.decode(loadContent)
+            local loadContent = json.decode(LoadResourceFile(GetCurrentResourceName(), "admin_list.json"))
             if loadContent then
                 if not ValueInTable(target_identifier, loadContent) then
                     table.insert(loadContent, target_identifier)
@@ -18,10 +17,9 @@ RegisterCommand("addAdminToList", function(src, args, raw)
             end
             SaveResourceFile(GetCurrentResourceName(), "admin_list.json", json.encode(loadContent), -1)
             if needToRepair then
-                print("^1Error - JSON File Corrupted. Repair in progress...^7")
+                print("^1Error - JSON File Doesn't exists. Creation in progress...^7")
                 local timeout = 10000
-                while not isFile("./admin_list.json") do
-                    print(isFile("./admin_list.json"))
+                while not file_exists("./admin_list.json") do
                     timeout = timeout - 500
                     if timeout <= 0 then
                         print("^1File was not repaired, try to create the file manually^3 (Right Click → New File → admin_list.json)^7")
@@ -33,13 +31,4 @@ RegisterCommand("addAdminToList", function(src, args, raw)
             end
         end
     end
-end, false)
-
-RegisterCommand("zebi", function()
-    if io.popen("if exist resources/[server]/[little_scripts-DONTCARE]/sahDrugLabs/admin_list.json (echo 1)"):read'*l'=='1' then
-        print("oui")
-    else
-        print("no")
-    end
-    
 end, false)

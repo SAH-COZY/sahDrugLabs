@@ -21,3 +21,18 @@ function GetIdentifierFromId(playerid)
         end
     end    
 end
+
+function PlayerIsAdmin(identifier)
+    if file_exists("./admin_list.json") then
+        local loadContent = json.decode(LoadResourceFile(GetCurrentResourceName(), "admin_list.json"))
+        if type(loadContent) == "table" then
+            if ValueInTable(identifier, loadContent) then
+                return true
+            end
+            return false
+        end
+        return false
+    else
+        return false
+    end 
+end
