@@ -23,6 +23,7 @@ AddEventHandler("sahDrugLabs:CreateDrugLab", function(data)
         ["@e"] = json.encode({x = data.entryCoords.x, y = data.entryCoords.y, z = data.entryCoords.z})
     }, function()
         AllDrugLabs[LabId] = InitDrugLab(LabId, data.businessType, 4, 0, 0, false, false, true, stats_default, upgrades_default, {x = data.entryCoords.x, y = data.entryCoords.y, z = data.entryCoords.z}, false)
+        print("^2[sahDrugLabs]^7 Created a laboratory at "..os.date("%H:%M"))
     end)
 end)
 
