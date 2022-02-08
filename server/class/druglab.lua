@@ -1,7 +1,8 @@
-function InitDrugLab(LabId, Owner, BusinessType, ProductionState, PercentOfStock, PercentOfSupplies, PlyCanResuply, PreparationMade, ResupplyButtonState, Stats, Upgrades, Entry, Bought)
+function InitDrugLab(LabId, Owner, Co_Owners, BusinessType, ProductionState, PercentOfStock, PercentOfSupplies, PlyCanResuply, PreparationMade, ResupplyButtonState, Stats, Upgrades, Entry, Bought)
     self = {}
     self.LabId = LabId
     self.Owner = Owner
+    self.Co_Owners = Co_Owners
     self.BusinessType = BusinessType
     self.ProductionState = ProductionState
     self.PercentOfStock = PercentOfStock
@@ -17,6 +18,7 @@ function InitDrugLab(LabId, Owner, BusinessType, ProductionState, PercentOfStock
         return {
             LabId = self.LabId,
             Owner = self.Owner,
+            Co_Owners = self.Co_Owners,
             BusinessType = self.BusinessType,
             ProductionState = self.ProductionState,
             PercentOfStock = self.PercentOfStock,
@@ -36,6 +38,29 @@ function InitDrugLab(LabId, Owner, BusinessType, ProductionState, PercentOfStock
             self.Owner = plyIdentifier
             self.Bought = true
             self.saveLab()
+        end
+    end
+
+    self.addCoOwner = function(src, targetId)
+        local targetIdentifier = GetIdentifierFromId(targetId)
+        if ValueInTable(targetIdentifier, self.Co_Owners) then return end
+        if GetIdentifierFromId(src) == self.Owner then
+            table.insert(self.Co_Owners, targetIdentifier)
+            TriggerEvent("sahDrugLabs:GetMyLabs", targetId)
+            TriggerClientEvent("sahDrugLabs:sendNotificationToPlayer", targetId, "You have now access to a new lab. Check on your map to have the location !")
+        end
+    end
+
+    self.removeCoOwner = function(src, targetId)
+        local targetIdentifier = GetIdentifierFromId(targetId)
+        if not ValueInTable(targetIdentifier, self.Co_Owners) then return end
+        if GetIdentifierFromId(src) == self.Owner then
+            for k,v in pairs(self.Co_Owners) do
+                if v == targetIdentifier then
+                    table.remove(k)
+                    TriggerEvent("sahDrugLabs:GetMyLabs", targetId)
+                end
+            end
         end
     end
 
@@ -87,8 +112,9 @@ function InitDrugLab(LabId, Owner, BusinessType, ProductionState, PercentOfStock
     end
 
     self.saveLab = function()
-        MySQL.Async.execute("UPDATE druglabs_list SET Owner = @a, ProductionState = @b, PercentOfStock = @c, PercentOfSupplies = @d, PlyCanResuply = @e, PreparationMade = @f, ResupplyButtonState = @g, Stats = @h, Upgrades = @i, Entry = @j, Bought = @k WHERE LabId = @l", {
+        MySQL.Async.execute("UPDATE druglabs_list SET Owner = @a, Co_Owners = @m, ProductionState = @b, PercentOfStock = @c, PercentOfSupplies = @d, PlyCanResuply = @e, PreparationMade = @f, ResupplyButtonState = @g, Stats = @h, Upgrades = @i, Entry = @j, Bought = @k WHERE LabId = @l", {
             ["@a"] = self.Owner,
+            ["@m"] = json.encode(self.Co_Owners),
             ["@b"] = self.ProductionState,
             ["@c"] = self.PercentOfStock,
             ["@d"] = self.PercentOfSupplies,
