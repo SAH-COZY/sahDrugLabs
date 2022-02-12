@@ -14,6 +14,7 @@ function InitDrugLab(LabId, Owner, Co_Owners, BusinessType, ProductionState, Per
     self.Upgrades = Upgrades
     self.Entry = Entry
     self.Bought = Bought
+
     self.returnMinLabData = function()
         return {
             LabId = self.LabId,
@@ -33,11 +34,12 @@ function InitDrugLab(LabId, Owner, Co_Owners, BusinessType, ProductionState, Per
         }
     end
 
-    self.setLabOwned = function(plyIdentifier)
-        if plyIdentifier then
-            self.Owner = plyIdentifier
+    self.setLabOwned = function(plyId)
+        if plyId then
+            self.Owner = GetIdentifierFromId(plyId)
             self.Bought = true
             self.saveLab()
+            TriggerEvent("sahDrugLabs:GetMyLabs", plyId)
         end
     end
 

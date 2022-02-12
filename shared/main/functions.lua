@@ -22,3 +22,7 @@ function ValueInTable(val, tab)
     end
     return false
 end
+
+function GetBusinessNameFromId(businessId)
+    return B_Name[tostring(businessId)]
+end

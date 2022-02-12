@@ -3,8 +3,6 @@ BusinessTypeInfos = {
         CustomBusinessName = nil,
         DefaultBusinessName = "Document Forgery Office",
         BusinessNameHash = 0x1FD5DA04,
-        AddonBusinessType = false,
-        AddonBusinessTypeBasedOn = nil,
         Load = function()
             BikerDocumentForgery.LoadDefault()
             BikerDocumentForgery.Style.Set(BikerDocumentForgery.Style.basic)
@@ -265,52 +263,12 @@ BusinessTypeInfos = {
         Position = vector3(1088.655, -3187.725, -38.99347),
         Heading = 181.589187762204
     },
+}
 
---------------------------------------------------------------------------------
---=========================     ADD-ON BUSINESSES    =========================--
---------------------------------------------------------------------------------
-    ------------ EXAMPLE ----------
-    -- ["5"] = {
-    --     CustomBusinessName = nil,
-    --     DefaultBusinessName = "Advanced Weed Farm",
-    --     BusinessNameHash = 0xEBE9A168,
-    --     AddonBusinessType = true,
-    --     AddonBusinessTypeBasedOn = 1,
-    --     PricePerPercent = {min = 200, max = 300},
-    --     Load = function()
-            
-    --     end,
-    --     LoadAfterPrepare = function()
-            
-    --     end,
-    --     Update1 = {
-    --         Index = 1,
-    --         Desc = "OR_UPG_0",
-    --         Price = 20000,
-    --         Txd = "advweed_upg_0",
-    --         Enabled = true,
-    --         SetInIPL = function()
-                
-    --         end
-    --     },
-    --     Update2 = {
-    --         Index = 2,
-    --         Desc = "OR_UPG_1",
-    --         Price = 45000,
-    --         Txd = "advweed_upg_2",
-    --         Enabled = true,
-    --         SetInIPL = function()
-                
-    --         end
-    --     },
-    --     Coords = {
-    --         Manage = vector3(-320.117, -1347.739, 24.90427)
-    --     },
-    --     Position = vector3(-323.2448, -1356.107, 31.41664),
-    --     Heading = 267.84408569336
-    -- }
-    ------------ ------- ----------
---------------------------------------------------------------------------------
---============================================================================--
---------------------------------------------------------------------------------
+B_Name = {
+    ["0"] = "Counterfeit Documents",
+    ["1"] = "Weed",
+    ["2"] = "Counterfeit Money",
+    ["3"] = "Meth",
+    ["4"] = "Cocain"
 }

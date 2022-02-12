@@ -36,3 +36,11 @@ function PlayerIsAdmin(identifier)
         return false
     end 
 end
+
+function MoveLabToRecycleBin(labInfos)
+    local content = LoadResourceFile(GetCurrentResourceName(), "./bin/"..labInfos.LabId.."_deleted")
+    if not content then
+        content = labInfos
+    end
+    SaveResourceFile(GetCurrentResourceName(), "./bin/"..labInfos.LabId.."_deleted", json.encode(content), -1)
+end

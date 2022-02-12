@@ -11,10 +11,3 @@ Citizen.CreateThread(function()
         end)
     end)
 end)
-
-RegisterCommand("attrib_lab", function(src, args)
-    if src ~= 0 and args[1] and args[2] then
-        local DrugLab = GetDrugLabFromId(args[1])
-        DrugLab.setLabOwned(GetIdentifierFromId(src))
-    end
-end, false)

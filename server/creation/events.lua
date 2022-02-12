@@ -22,7 +22,7 @@ AddEventHandler("sahDrugLabs:CreateDrugLab", function(data)
         ["@d"] = json.encode(upgrades_default),
         ["@e"] = json.encode({x = data.entryCoords.x, y = data.entryCoords.y, z = data.entryCoords.z})
     }, function()
-        AllDrugLabs[LabId] = InitDrugLab(LabId, data.businessType, 4, 0, 0, false, false, true, stats_default, upgrades_default, {x = data.entryCoords.x, y = data.entryCoords.y, z = data.entryCoords.z}, false)
+        AllDrugLabs[tostring(LabId)] = InitDrugLab(LabId, nil, {}, data.businessType, 4, 0, 0, false, false, true, stats_default, upgrades_default, {x = data.entryCoords.x, y = data.entryCoords.y, z = data.entryCoords.z}, false)
         print("^2[sahDrugLabs]^7 Created a laboratory at "..os.date("%H:%M"))
     end)
 end)
@@ -31,12 +31,17 @@ RegisterNetEvent("sahDrugLabs:AttributeLab")
 AddEventHandler("sahDrugLabs:AttributeLab", function(labId)
     local _src = source
     local identifier = GetIdentifierFromId(_src)
-    local loadContent = LoadResourceFile(GetCurrentResourceName(), flan)
-    loadContent = json.decode(loadContent)
-    table.insert(loadContent, identifier)
-    SaveResourceFile(GetCurrentResourceName(), "admin_list.json", json.encode(loadContent), -1)
+    if PlayerIsAdmin(identifier) then
+        local DrugLab = GetDrugLabFromId(tostring(labId))
+        DrugLab.setLabOwned(_src)
+    end    
 end)
 
+-- RegisterCommand("attrib_lab", function(src, args)
+--     if src ~= 0 and args[1] then
+--         
+--     end
+-- end, false)
 
 
 -- PlayerLab = {
