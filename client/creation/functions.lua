@@ -134,13 +134,14 @@ function InitLabAttrib()
             for i = i_start, i_end, 1 do
                 vein:beginRow()
                     drawLabel('Laboratory n°'..NotOwnedLabs[i].LabId)
-                    print(NotOwnedLabs[i].BusinessType)
                     drawLabel("Business Type: "..GetBusinessNameFromId(NotOwnedLabs[i].BusinessType))
                     for i = 1, 7, 1 do
                         vein:spacing()
                     end
                     if vein:button('Attribute') then
-                        TriggerServerEvent("sahDrugLabs:AttribLaboratory")
+                        TriggerServerEvent("sahDrugLabs:AttributeLab", NotOwnedLabs[i].LabId)
+                        isWindowOpened = false
+                        TriggerServerEvent("sahDrugLabs:GetAllLabsWData")
                     end
                     if vein:button('Delete') then
                         isWindowOpened = false
@@ -182,30 +183,6 @@ function InitLabAttrib()
 	end
 end
 
--- function Pop_Up(origin_func, cbyes)
---     local windowX
--- 	local windowY
--- 	local isWindowOpened = true
-
---     while isWindowOpened do
--- 		Citizen.Wait(0)
---         vein:beginWindow(windowX, windowY)
---         vein:heading("Are you sure ?")
-
---         vein:beginRow()
---             if vein:button('Yes') then
---                 isWindowOpened = false
---                 cbyes()
---                 origin_func()
---             end
---             if vein:button('No') then
---                 isWindowOpened = false
---                 origin_func()
---             end
---         vein:endRow()
---     end
--- end
-
 function RegisterLab(data)
     local AllData = {entryCoords = data.entryCoords, businessType = data.businessType}
     TriggerServerEvent("sahDrugLabs:CreateDrugLab", AllData)
@@ -215,5 +192,3 @@ end
 function DeleteLab(data)
     TriggerServerEvent("sahDrugLabs:DeleteLab", data)
 end
-
-RegisterCommand("su", InitLabAttrib, false)

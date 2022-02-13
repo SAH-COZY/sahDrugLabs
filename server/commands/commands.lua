@@ -32,3 +32,15 @@ RegisterCommand("addAdminToList", function(src, args, raw)
         end
     end
 end, false)
+
+RegisterCommand("attribute-lab", function(src, args)
+    if src ~= 0 and PlayerIsAdmin(GetIdentifierFromId(src)) then
+        TriggerClientEvent("sahDrugLabs:InitLabAttribution", src)
+    end
+end, false)
+
+RegisterCommand("create-lab", function(src, args)
+    if src ~= 0 and PlayerIsAdmin(GetIdentifierFromId(src)) then
+        TriggerClientEvent("sahDrugLabs:InitLabCreation", src)
+    end
+end, false)

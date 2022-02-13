@@ -8,8 +8,8 @@ AddEventHandler("sahDrugLabs:GetMyLabs", function(newsrc)
         Wait(20)
     end
     for k,v in pairs(AllDrugLabs) do
-        if (v.Owner == plyIdentifier and v.Bought) or ValueInTable(plyIdentifier, v.Co_Owners) then
-            player_labs[tostring(v.LabId)] = v.returnMinLabData()
+        if (v.Owner == plyIdentifier and v.Bought) or ValueInTable(plyIdentifier, v.Co_Owners) and not player_labs[tostring(v.LabId)] then
+            player_labs[tostring(v.LabId)] = {LabId = v.LabId, Owner = v.Owner, Co_Owners = v.Co_Owners, BusinessType = v.BusinessType, ProductionState = v.ProductionState, PercentOfStock = v.PercentOfStock, PercentOfSupplies = v.PercentOfSupplies, PlyCanResuply = v.PlyCanResuply, PreparationMade = v.PreparationMade, ResupplyButtonState = v.ResupplyButtonState, Stats = v.Stats, Upgrades = v.Upgrades, Entry = v.Entry, Bought = v.Bought}
         end
     end
     TriggerClientEvent("sahDrugLabs:ReturnMyLabs", _src, player_labs)
@@ -38,7 +38,6 @@ AddEventHandler("sahDrugLabs:GetAllLabsWData", function(all_clients)
     local all_labs = {}
     for k,v in pairs(AllDrugLabs) do
         if (not v.Bought) then
-            print(v.BusinessType)
             table.insert(all_labs, {BusinessType = v.BusinessType, LabId = v.LabId})
         end
     end
@@ -55,7 +54,6 @@ AddEventHandler("sahDrugLabs:DeleteLab", function(labId)
     local identifier = GetIdentifierFromId(_src)
     if PlayerIsAdmin(identifier) then
         local DrugLab, IsValid = GetDrugLabFromId(labId)
-        print(json.encode(DrugLab.returnMinLabData()))
         if IsValid then
             MySQL.Async.execute("DELETE FROM `druglabs_list` WHERE LabId = @a", {
                 ["@a"] = labId
