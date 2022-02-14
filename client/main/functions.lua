@@ -56,23 +56,30 @@ function AddZone(zoneName, position, key, cb)
     }
 end
 
-function DisplayHelp(text, fontid, keys, cb)
+function DisplayHelp(text, fontid)
 	SetTextFont(fontid or 1)
 	BeginTextCommandDisplayHelp('STRING')
 	AddTextComponentSubstringPlayerName(text)
-	EndTextCommandDisplayHelp(0, false, true, 150)
-    if cb then
-        for _,v in ipairs(keys) do
-            DisableControlAction(0, v, true)
-            if IsDisabledControlJustReleased(0, v) then
-                cb(v)
-            end
-        end
-    end
+	return EndTextCommandDisplayHelp(0, false, true, 150)
 end
 
 function DisplayNotification(text)
     BeginTextCommandThefeedPost('STRING')
     AddTextComponentSubstringPlayerName(text)
-    EndTextCommandThefeedPostTicker(false, true)
+    return EndTextCommandThefeedPostTicker(false, true)
+end
+
+function DisplayPictureNotification(sender, reason, text, textDict, icon)
+	AddTextEntry('PICTURE_NOTIFICATION', text)
+	BeginTextCommandThefeedPost('PICTURE_NOTIFICATION')
+	return EndTextCommandThefeedPostMessagetext(textDict, textDict, false, icon, sender, reason)
+end
+
+function SpawnVehicle(model, coords, heading, callback)
+    local model = GetHashKey(model)
+    RequestModel(model)
+    while not HasModelLoaded(model) do
+        Wait(1)
+    end
+    return CreateVehicle(model, coords.x, coords.y, coords.z, heading or 90.0, true, false)
 end
